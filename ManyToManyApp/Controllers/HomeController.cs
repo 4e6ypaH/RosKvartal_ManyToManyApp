@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManyToManyApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,16 +9,21 @@ namespace ManyToManyApp.Controllers
 {
     public class HomeController : Controller
     {
+        private StudentContext db = new StudentContext();
+
         public ActionResult Index()
         {
-            return View();
+            return View(db.Students.ToList());
         }
 
-        public ActionResult About()
+        public ActionResult Details(int id = 0)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            Student student = db.Students.Find(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
         }
 
         public ActionResult Contact()
